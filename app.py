@@ -78,7 +78,7 @@ def home():
     return render_template('pages/placeholder.home.html')
 
 
-@app.route('/about')
+@app.route('/case-report-form-instructions')
 def about():
     return render_template('pages/placeholder.about.html')
 
