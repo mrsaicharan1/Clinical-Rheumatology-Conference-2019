@@ -1,0 +1,108 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block header %}<link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+<div id="google_translate_element"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'bn,en,gu,hi,pa,ta,te', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+<!-- Profile side bar -->
+<div class="row">
+
+  <div class="col-md-3">
+
+    <img class="img-thumbnail" src="//placehold.it/200x200" width="200" heigh="200" alt="">
+
+    <h5>Logged in as <i>{{ session['email'] }}</i> </h5>
+
+  </div> <!-- col-md-3 -->
+<!-- //Profile side bar -->
+
+<div class="col-md-9">
+  <h2> Research Paper upload </h2>
+  <form action = "{{ url_for('paper_upload') }}" method = "POST" enctype = "multipart/form-data">
+         Category:
+         <select name="domain" >
+           <option value="electronics">Electronics</option>
+           <option value="ceramics">Ceramics</option>
+           <option value="energy">Energy</option>
+           <option value="nanomaterials">Nanomaterials</option>
+         </select>
+         <br>
+         <br>
+         Journal Title: <input type = "text" name="Title"><br><br>
+         <input type = "file" name = "file"><br>
+         <input type = "submit"/><br>
+      </form>
+      <br>
+
+
+<!-- Status table + File Upload  -->
+
+<h3>Submitted Papers</h3>
+    <div class="row"><!-- table -->
+
+
+        <table class="pure-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Submission Date</th>
+            <th>Submitted Link</th>
+        </tr>
+    </thead>
+
+    <tbody>
+      {% for paper in papers %}
+        <tr>
+            <td>.</td>
+            <td>{{ paper['title'] }}</td>
+            <td>{{ paper['status'] }}</td>
+            <td>{{ paper['date'] }}</td>
+            <td><a href="https://s3.amazonaws.com/zappa-jepozm5pw/{{ paper['filename'] }}">{{ paper['filename'] }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table> <!-- //table --><br><br><br>
+
+<!-- Error notification  -->
+<h3>Grammatical/Relevance Error Notifications</h3>
+<div class="row"><!-- table -->
+
+<table class="pure-table">
+<thead>
+  <tr>
+        <th>Sender</th>
+        <th>Title</th>
+        <th>Detailed description</th>
+    </tr>
+
+</thead>
+
+<tbody>
+  {% for comment in comments  %}
+    <tr>
+
+        <td>{{ comment['commenter'] }}</td>
+        <td>{{ comment['title'] }}</td>
+        <td>{{ comment['desc'] }}</td>
+
+    </tr>
+  {% endfor %}
+</tbody>
+</table> <!-- //table --><br><br>
+<td><a href="{{ url_for('check_notification') }}">Check Notification</button></td>
+
+<!-- //Error notification   -->
+
+</div> <!-- col-md-9 --> <!-- Center Section -->
+<!-- //Status table + File Upload  -->
+</div>
+{% endblock %}
