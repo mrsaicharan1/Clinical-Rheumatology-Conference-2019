@@ -39,7 +39,7 @@
 <script src="{{ url_for('static', filename='js/libs/modernizr-2.8.2.min.js') }}"></script>
 <!--[if lt IE 9]><script src="/static/js/libs/respond-1.4.2.min.js"></script><![endif]-->
 <!-- /scripts -->
-<body background="{{ url_for('static', filename='o.jpg') }}">
+<body> <!--background="{{ url_for('static', filename='o.jpg') }}"-->
 
   <!-- Wrap all page content here -->
   <div id="wrap">
@@ -53,13 +53,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Open Web</a>
+          <a class="navbar-brand" href="/">CRC 2019</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li {% if request.endpoint == 'home' %} class="active" {% endif %}><a href="{{ url_for('home') }}">Home</a></li>
-            <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li>
-            <li class="dropdown">
+            <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">Report Format</a></li>
+            <!--<li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a></a></li>
@@ -69,7 +69,7 @@
                 <li class="dropdown-header">Nav header</li>
                 <li><a>One more separated link</a></li>
               </ul>
-            </li>
+            </li>-->
             {% if session['email'] %}
             <li {% if request.endpoint == 'dashboard' and not session %} class="active" {% endif %}><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
             <li {% if request.endpoint == 'logout' and not session %} class="active" {% endif %}><a href="{{ url_for('logout') }}">Logout</a></li>
