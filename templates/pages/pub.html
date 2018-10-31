@@ -51,7 +51,7 @@ new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'b
         <table class="pure-table">
     <thead>
         <tr>
-            <th>#</th>
+            <th>Submission Number</th>
             <th>Title</th>
             <th>Status</th>
             <th>Submission Date</th>
@@ -62,7 +62,7 @@ new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'b
     <tbody>
       {% for paper in papers %}
         <tr>
-            <td>.</td>
+            <td>{{ paper['sub_id'] }}</td>
             <td>{{ paper['title'] }}</td>
             <td>{{ paper['status'] }}</td>
             <td>{{ paper['date'] }}</td>
