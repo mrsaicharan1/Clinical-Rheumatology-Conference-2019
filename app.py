@@ -70,7 +70,8 @@ def login_required(test):
             flash('You need to login first.')
             return redirect(url_for('login'))
     return wrap
-'''#----------------------------------------------------------------------------#
+'''
+#----------------------------------------------------------------------------#
 s3 = boto3.client('s3')
 
 @app.route('/')
@@ -97,7 +98,7 @@ def login():
                     session['email'] = form.email.data
                     session['user_type'] = kind
                     return redirect(url_for('dashboard'))
-                # reviewer login
+                    #reviewer login
             elif user and user.type == 'Subscriber' :
                 if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
                     session['email'] = form.email.data
@@ -110,11 +111,11 @@ def login():
                     session['user_type'] = kind
                     return redirect(url_for('dashboard'))
                     #publisher login
-            elif user and user.type == 'Editor' :
-                if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
-                    session['email'] = form.email.data
-                    session['user_type'] = kind
-                    return redirect(url_for('dashboard'))
+            # elif user and user.type == 'Editor' :
+            #     if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
+            #         session['email'] = form.email.data
+            #         session['user_type'] = kind
+            #         return redirect(url_for('dashboard'))
 
         elif not user:
             error = 'Incorrect credentials'
@@ -130,8 +131,7 @@ def paper_upload(): # Journal Upload
         os.chdir('/tmp')
         filename = files.save(request.files['file'])
         file = request.files['file']
-        doc = Journal(title=request.form['Title'],user_email=session['email'],
-                    domain=request.form['domain'],status="submission received",filename=filename,date=datetime.datetime.utcnow())
+        doc = Journal(title=request.form['Title'],user_email=session['email'],domain=request.form['domain'],status="submission received",filename=filename,date=datetime.datetime.utcnow())
         doc.save()
         data = open(app.config['UPLOADED_FILES_DEST']+'/'+filename, 'rb')
         s3 = boto3.client('s3')
@@ -161,27 +161,17 @@ def narrow_down():
                 files = Journal.query.filter_by(status="submission received").all()
                 return render_template('pages/rev.html',files=files)
 
-        elif session['user_type'] == 'Editor':
-            if request.form['select-domain'] == 'all':
-                files = Journal.query.filter(Journal.status=='Under Editor Review').all()
-                return render_template('pages/editor.html',files=files)
-            else:
-                files = Journal.query.filter(Journal.domain==request.form['select-domain'] and Journal.status == 'Under Editor Review').all()
-                return render_template('pages/editor.html',files=files)
+        # elif session['user_type'] == 'Editor':
+        #     if request.form['select-domain'] == 'all':
+        #         files = Journal.query.filter(Journal.status=='Under Editor Review').all()
+        #         return render_template('pages/editor.html',files=files)
+        #     else:
+        #         files = Journal.query.filter(Journal.domain==request.form['select-domain'] and Journal.status == 'Under Editor Review').all()
+        #         return render_template('pages/editor.html',files=files)
 
 @app.route('/narrow_down_peer_review',methods=['POST','GET'])
 def narrow_down_peer_review():
-    if request.method=='POST':
-        try:
-            if request.form['select-domain'] == 'all':
-                files = Journal.query.filter(Journal.status=='submission received').all()
-                return render_template('pages/sub_peer.html',files=files)
-            else:
-                files = Journal.query.filter(Journal.domain==request.form['select-domain']).all()
-                return render_template('pages/sub_peer.html',files=files)
-        except Exception as e:
-            return str(e)
-
+    pass
 ### DASHBOARD
 @app.route('/dashboard',methods=['POST','GET'])
 def dashboard():
@@ -189,14 +179,8 @@ def dashboard():
         return render_template('pages/pub.html',papers=Journal.query.filter(Journal.user_email==session['email']).all(),
                                 comments=Comments.query.filter_by(user=session['email']).all())
 
-
     elif session['user_type'] == 'Reviewer':
         return render_template('pages/rev.html',files=Journal.query.filter(Journal.status=='submission received').all())
-
-    elif session['user_type'] == 'Subscriber':
-        return render_template('pages/sub.html',files=Journal.query.filter(Journal.status=='Accepted').all())
-    elif session['user_type'] == 'Editor':
-        return render_template('pages/editor.html',files=Journal.query.filter(Journal.status=='Under Editor Review').all())
 
     return redirect(url_for('home'))
 
@@ -208,21 +192,17 @@ def dashboard():
 
 # paper logic
 
-@app.route('/paper_editor/<title>',methods=['POST','GET'])
-def paper_editor(title):
-    paper = Journal.query.filter(Journal.title==title).first()
-    paper.status = 'Under Editor Review'
-    paper.save()
-    flash('The Journal Paper has been reviewed under a Reviewer. Information will be communicated to the Publisher.')
-    return redirect(url_for('dashboard'))
-
+# @app.route('/paper_editor/<title>',methods=['POST','GET'])
+# def paper_editor(title):
+#     pass
+    # paper = Journal.query.filter(Journal.title==title).first()
+    # paper.status = 'Under Editor Review'
+    # paper.save()
+    # flash('The Journal Paper has been reviewed under a Reviewer. Information will be communicated to the Publisher.')
+    # return redirect(url_for('dashboard'))
 @app.route('/paper_peer_review/<title>',methods=['POST','GET'])
 def paper_peer_review(title):
-    paper=Journal.query.filter_by(title=title).first()
-    paper.status = 'Under Peer Review'
-    paper.save()
-    flash('The Journal Paper has been reviewed. Information will be communicated to the Publisher.')
-    return redirect(url_for('dashboard'))
+    pass
 
 @app.route('/paper_revision/<title>',methods=['POST','GET'])
 def paper_revision(title):
@@ -250,14 +230,7 @@ def paper_accept(title):
 
 @app.route('/sub_peer',methods=['POST','GET'])
 def sub_peer():
-    return render_template('pages/sub_peer.html',files=Journal.query.filter(Journal.status=='submission received').all())
-
-
-
-
-
-
-
+    pass
 
 @app.route('/logout',methods=['POST','GET'])
 def logout():
