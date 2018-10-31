@@ -14,8 +14,8 @@ SECRET_KEY = 'my precious'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database.db')
 
 #AWS credentials
-S3_BUCKET                 = "zappa-jepozm5pw"
-S3_KEY                    = "AKIAIIYUHXN6SO5WOEYQ"
+S3_BUCKET                 = ""
+S3_KEY                    = ""
 S3_SECRET                 = "LSueLj/BNNJIQACHRa0o+u5eXOmt7rCse8tAxNnB"
 S3_LOCATION               = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
 
