@@ -76,11 +76,13 @@ s3 = boto3.client('s3')
 
 @app.route('/')
 def home():
-    return render_template('pages/placeholder.home.html')
+
+    return render_template('pages/pages.landing.html')
 
 
 @app.route('/about')
 def about():
+
     return render_template('pages/placeholder.about.html')
 
 
@@ -185,7 +187,9 @@ def dashboard():
     return redirect(url_for('home'))
 
 
-
+@app.route('/details')
+def details():
+    return render_template('pages/placeholder.home.html')
 
 
 
