@@ -22,7 +22,7 @@ class RegisterForm(Form):
     )
     type = SelectField(
         'Select Type',
-        choices=[('sub','Subscriber'),('pub','Publisher')]
+        choices=[('pub','Publisher')]
     )
 
 

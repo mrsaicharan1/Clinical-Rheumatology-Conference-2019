@@ -179,9 +179,9 @@ def dashboard():
         return render_template('pages/pub.html',papers=Journal.query.filter(Journal.user_email==session['email']).all(),
                                 comments=Comments.query.filter_by(user=session['email']).all())
 
-    # elif session['user_type'] == 'Reviewer':
-    #     return render_template('pages/rev.html',files=Journal.query.filter(Journal.status=='submission received').all())
-    #
+    elif session['user_type'] == 'Reviewer':
+        return render_template('pages/rev.html',files=Journal.query.filter(Journal.status=='submission received').all())
+
     # elif session['user_type'] == 'Subscriber':
     #     return render_template('pages/sub.html',files=Journal.query.filter(Journal.status=='Accepted').all())
     # elif session['user_type'] == 'Editor':
