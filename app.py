@@ -90,7 +90,7 @@ def login():
     error = None
     if request.method == 'POST':
         user = User.query.filter_by(email=form.email.data).first()
-        if user:
+        if type(user) is not None:
             kind = user.type
         #  login
             if user.type == 'Reviewer':
@@ -99,12 +99,12 @@ def login():
                     session['user_type'] = kind
                     return redirect(url_for('dashboard'))
                     #reviewer login
-            elif user and user.type == 'Subscriber' :
-                if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
-                    session['email'] = form.email.data
-                    session['user_type'] = kind
-                    return redirect(url_for('dashboard'))
-                    # subscriber login
+            # elif user and user.type == 'Subscriber' :
+            #     if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
+            #         session['email'] = form.email.data
+            #         session['user_type'] = kind
+            #         return redirect(url_for('dashboard'))
+            #         # subscriber login
             elif user and user.type == 'Publisher' :
                 if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
                     session['email'] = form.email.data
@@ -141,25 +141,25 @@ def paper_upload(): # Journal Upload
 
 @app.route('/narrow_down',methods=['POST','GET'])
 def narrow_down():
-    if request.method=='POST':
-        if session['user_type'] == 'Subscriber':
-            try:
-                if request.form['select-domain'] == 'all':
-                    files = Journal.query.filter(Journal.status=='Accepted').all()
-
-                else:
-                    files = Journal.query.filter(Journal.domain==request.form['select-domain']).all()
-                return render_template('pages/sub.html',files=files)
-            except Exception as e:
-                return str(e)
-
-        if session['user_type'] == 'Reviewer':
-            if request.form['select-domain'] == "all":
-                files = Journal.query.filter_by(status="submission received").all()
-                return render_template('pages/rev.html',files=files)
-            else:
-                files = Journal.query.filter_by(status="submission received").all()
-                return render_template('pages/rev.html',files=files)
+    # if request.method=='POST':
+    #     if session['user_type'] == 'Subscriber':
+    #         try:
+    #             if request.form['select-domain'] == 'all':
+    #                 files = Journal.query.filter(Journal.status=='Accepted').all()
+    #
+    #             else:
+    #                 files = Journal.query.filter(Journal.domain==request.form['select-domain']).all()
+    #             return render_template('pages/sub.html',files=files)
+    #         except Exception as e:
+    #             return str(e)
+    #
+    #     if session['user_type'] == 'Reviewer':
+    if request.form['select-domain'] == "all":
+        files = Journal.query.filter(Journal.status=="submission received").all()
+        return render_template('pages/rev.html',files=files)
+    else:
+        files = Journal.query.filter(Journal.domain==request.form['select-domain']).all()
+        return render_template('pages/rev.html',files=files)
 
         # elif session['user_type'] == 'Editor':
         #     if request.form['select-domain'] == 'all':
