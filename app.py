@@ -110,7 +110,7 @@ def login():
                     session['email'] = form.email.data
                     session['user_type'] = kind
                     return redirect(url_for('dashboard'))
-                    #publisher login
+
             elif user and user.type == 'Editor' :
                 if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
                     session['email'] = form.email.data
