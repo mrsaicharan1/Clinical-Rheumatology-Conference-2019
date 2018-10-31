@@ -131,7 +131,7 @@ def paper_upload(): # Journal Upload
         os.chdir('/tmp')
         filename = files.save(request.files['file'])
         file = request.files['file']
-        doc = Journal(title=request.form['Title'],user_email=session['email'],domain=request.form['domain'],status="submission received",filename=filename,date=datetime.datetime.utcnow())
+        doc = Journal(sub_id=str(random.randint(0,999999999)),title=request.form['Title'],user_email=session['email'],domain=request.form['domain'],status="submission received",filename=filename,date=datetime.datetime.utcnow())
         doc.save()
         data = open(app.config['UPLOADED_FILES_DEST']+'/'+filename, 'rb')
         s3 = boto3.client('s3')

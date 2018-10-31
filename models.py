@@ -15,6 +15,7 @@ class User(db.Document):
     type = db.StringField()
 
 class Journal(db.Document):
+    sub_id = db.StringField()
     title = db.StringField()
     user_email = db.StringField()
     domain = db.StringField()
