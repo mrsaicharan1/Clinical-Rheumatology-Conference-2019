@@ -5,6 +5,7 @@
         "profile_name": "default", 
         "project_name": "clinical-rheuma", 
         "runtime": "python2.7", 
-        "s3_bucket": "zappa-n3d5aazz5"
+        "s3_bucket": "zappa-396lsb6vy",
+	"keep_warm": false
     }
 }

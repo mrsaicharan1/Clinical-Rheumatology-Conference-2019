@@ -32,7 +32,7 @@ db = SQLAlchemy(app)
 # File upload config
 files = UploadSet('files',DOCUMENTS)
 app.config['UPLOADED_FILES_DEST'] = 'static/journals'
-app.config['UPLOADED_FILES_ALLOW']=['doc','docx']
+app.config['UPLOADED_FILES_ALLOW']=['doc','docx','ppt','pptx','pdf']
 app.config.update(dict(
     DEBUG = True,
     MAIL_SERVER = "smtp.gmail.com",

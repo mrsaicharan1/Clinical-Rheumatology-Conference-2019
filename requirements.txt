@@ -9,6 +9,7 @@ coverage
 Flask-MongoAlchemy
 Flask-PyMongo
 Zappa
+werkzeug==0.14
 # ecdsa
 # paramiko
 # pycrypto
