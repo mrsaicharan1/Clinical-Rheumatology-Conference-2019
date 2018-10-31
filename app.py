@@ -110,12 +110,12 @@ def login():
                     session['email'] = form.email.data
                     session['user_type'] = kind
                     return redirect(url_for('dashboard'))
-
-            elif user and user.type == 'Editor' :
-                if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
-                    session['email'] = form.email.data
-                    session['user_type'] = kind
-                    return redirect(url_for('dashboard'))
+                    #publisher login
+            # elif user and user.type == 'Editor' :
+            #     if bcrypt.hashpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')) == user.password.encode('utf-8'):
+            #         session['email'] = form.email.data
+            #         session['user_type'] = kind
+            #         return redirect(url_for('dashboard'))
 
         elif not user:
             error = 'Incorrect credentials'
@@ -161,13 +161,13 @@ def narrow_down():
                 files = Journal.query.filter_by(status="submission received").all()
                 return render_template('pages/rev.html',files=files)
 
-        elif session['user_type'] == 'Editor':
-            if request.form['select-domain'] == 'all':
-                files = Journal.query.filter(Journal.status=='Under Editor Review').all()
-                return render_template('pages/editor.html',files=files)
-            else:
-                files = Journal.query.filter(Journal.domain==request.form['select-domain'] and Journal.status == 'Under Editor Review').all()
-                return render_template('pages/editor.html',files=files)
+        # elif session['user_type'] == 'Editor':
+        #     if request.form['select-domain'] == 'all':
+        #         files = Journal.query.filter(Journal.status=='Under Editor Review').all()
+        #         return render_template('pages/editor.html',files=files)
+        #     else:
+        #         files = Journal.query.filter(Journal.domain==request.form['select-domain'] and Journal.status == 'Under Editor Review').all()
+        #         return render_template('pages/editor.html',files=files)
 
 @app.route('/narrow_down_peer_review',methods=['POST','GET'])
 def narrow_down_peer_review():
@@ -182,11 +182,6 @@ def dashboard():
     elif session['user_type'] == 'Reviewer':
         return render_template('pages/rev.html',files=Journal.query.filter(Journal.status=='submission received').all())
 
-    # elif session['user_type'] == 'Subscriber':
-    #     return render_template('pages/sub.html',files=Journal.query.filter(Journal.status=='Accepted').all())
-    # elif session['user_type'] == 'Editor':
-    #     return render_template('pages/editor.html',files=Journal.query.filter(Journal.status=='Under Editor Review').all())
-
     return redirect(url_for('home'))
 
 
@@ -197,9 +192,9 @@ def dashboard():
 
 # paper logic
 
-@app.route('/paper_editor/<title>',methods=['POST','GET'])
-def paper_editor(title):
-    pass
+# @app.route('/paper_editor/<title>',methods=['POST','GET'])
+# def paper_editor(title):
+#     pass
     # paper = Journal.query.filter(Journal.title==title).first()
     # paper.status = 'Under Editor Review'
     # paper.save()
